@@ -1,0 +1,221 @@
+CREATE DATABASE IF NOT EXISTS Boleirones;
+USE Boleirones;
+
+-- times
+CREATE TABLE Times (
+    idTime INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    pontos INT DEFAULT 0
+);
+
+-- jogadores
+CREATE TABLE Jogadores (
+    idJogador INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    posicao VARCHAR(50) NOT NULL,
+    numero INT NOT NULL,
+    idTime INT,
+    gols INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (idTime) REFERENCES Times(idTime) ON DELETE CASCADE
+);
+drop table jogadores
+-- estadios
+CREATE TABLE Estadios (
+    idEstadio INT AUTO_INCREMENT PRIMARY KEY,
+    NomeEstadio VARCHAR(144) NOT NULL,
+    Capacidade INT NOT NULL,
+    Cidade VARCHAR(100)
+);
+
+-- jogos
+CREATE TABLE Jogos (
+    idJogo INT AUTO_INCREMENT PRIMARY KEY,
+    idTimeCasa INT NOT NULL,
+    idTimeFora INT NOT NULL,
+    golsTimeCasa INT DEFAULT 0,
+    golsTimeFora INT DEFAULT 0,
+    pontosTimeCasa INT NOT NULL DEFAULT 0,
+    pontosTimeFora INT NOT NULL DEFAULT 0,
+    idEstadio INT NOT NULL,
+    horario TIME NOT NULL,
+    FOREIGN KEY (idTimeCasa) REFERENCES Times(idTime) ON DELETE CASCADE,
+    FOREIGN KEY (idTimeFora) REFERENCES Times(idTime) ON DELETE CASCADE,
+FOREIGN KEY (idEstadio) REFERENCES Estadios(idEstadio) ON DELETE CASCADE
+);
+
+-- gols
+CREATE TABLE Gols (
+    idGol INT AUTO_INCREMENT PRIMARY KEY,
+    idJogador INT NOT NULL,
+    idJogo INT NOT NULL,
+    minuto INT,
+    FOREIGN KEY (idJogador) REFERENCES Jogadores(idJogador) ON DELETE CASCADE,
+    FOREIGN KEY (idJogo) REFERENCES Jogos(idJogo) ON DELETE CASCADE
+);
+
+
+INSERT INTO Times (nome, cidade, pontos) VALUES
+  ('Atlético-MG', 'Belo Horizonte', 0),
+  ('Bahia', 'Salvador', 0),
+  ('Botafogo', 'Rio de Janeiro', 0),
+  ('Bragantino', 'Bragança Paulista', 0),
+  ('Ceará', 'Fortaleza', 0),
+  ('Corinthians', 'São Paulo', 0),
+  ('Cruzeiro', 'Belo Horizonte', 0),
+  ('Santos', 'Santos', 0);
+
+
+
+INSERT INTO Estadios (NomeEstadio, Capacidade, Cidade) VALUES
+  ('Arena MRV', 44892, 'Belo Horizonte'), 
+  ('Arena Fonte Nova', 47907, 'Salvador'), 
+  ('Olímpico Nilton Santos', 44661, 'Rio de Janeiro'), 
+  ('Arena Castelão', 63903, 'Fortaleza'), 
+  ('Neo Química Arena', 47252, 'São Paulo'), 
+  ('Mineirão', 61927, 'Belo Horizonte'),  
+  ('Maracanã', 78838, 'Rio de Janeiro'),
+  ('Vila Belmiro', 16068, 'Santos');
+
+
+
+-- Inserindo 11 jogadores para cada time
+
+INSERT INTO Jogadores (nome, posicao, numero, idTime, gols) VALUES
+  -- Atlético-MG
+  ('Guilherme Arana', 'Lateral', 13, 1, 0),
+  ('Hulk', 'Atacante', 7, 1, 0),
+  ('Everson', 'Goleiro', 22, 1, 0),
+  ('Allan', 'Meio Campo', 5, 1, 0),
+  ('Guilherme', 'Atacante', 25, 1, 0),
+  ('Keno', 'Atacante', 11, 1, 0),
+  ('Luan', 'Meio Campo', 27, 1, 0),
+  ('Zé Ricardo', 'Zagueiro', 4, 1, 0),
+  ('Júnior Alonso', 'Zagueiro', 3, 1, 0),
+  ('Tardelli', 'Atacante', 9, 1, 0),
+  ('Júnior', 'Meio Campo', 20, 1, 0),
+
+  -- Bahia
+  ('Gilberto', 'Atacante', 9, 2, 0),
+  ('Nino Paraíba', 'Lateral', 2, 2, 0),
+  ('Douglas', 'Goleiro', 12, 2, 0),
+  ('Daniel', 'Meio Campo', 10, 2, 0),
+  ('Matheus Bahia', 'Lateral', 5, 2, 0),
+  ('Rodrigo Becão', 'Zagueiro', 4, 2, 0),
+  ('Rossi', 'Meio Campo', 8, 2, 0),
+  ('Rodriguinho', 'Meio Campo', 22, 2, 0),
+  ('Thiago', 'Atacante', 17, 2, 0),
+  ('Felipe', 'Zagueiro', 5, 2, 0),
+  ('Ramon', 'Meio Campo', 6, 2, 0),
+
+  -- Botafogo
+  ('Jefferson', 'Goleiro', 1, 3, 0),
+  ('Carlos Alberto', 'Meio Campo', 10, 3, 0),
+  ('Luiz Henrique', 'Atacante', 11, 3, 0),
+  ('Borges', 'Atacante', 17, 3, 0),
+  ('Victor Luis', 'Lateral', 6, 3, 0),
+  ('Pedro Raul', 'Atacante', 15, 3, 0),
+  ('Barreto', 'Meio Campo', 8, 3, 0),
+  ('Cícero', 'Meio Campo', 7, 3, 0),
+  ('Rafael', 'Lateral', 13, 3, 0),
+  ('Caio Alexandre', 'Meio Campo', 21, 3, 0),
+  ('Leandro Carvalho', 'Atacante', 23, 3, 0),
+
+  -- Bragantino
+  ('Cláudio', 'Goleiro', 13, 4, 0),
+  ('Artur', 'Atacante', 11, 4, 0),
+  ('Alerrandro', 'Atacante', 19, 4, 0),
+  ('Thiago Ribeiro', 'Meio Campo', 20, 4, 0),
+  ('Ytalo', 'Atacante', 21, 4, 0),
+  ('Jadsom', 'Meio Campo', 8, 4, 0),
+  ('Pablo', 'Zagueiro', 4, 4, 0),
+  ('Lucas Evangelista', 'Meio Campo', 10, 4, 0),
+  ('Claudinho', 'Meio Campo', 25, 4, 0),
+  ('Lucas Cândido', 'Meio Campo', 22, 4, 0),
+  ('Ramon', 'Atacante', 19, 4, 0),
+
+  -- Ceará
+  ('Vina', 'Meio Campo', 29, 5, 0),
+  ('Felipe Jonatan', 'Lateral', 6, 5, 0),
+  ('Tiago', 'Goleiro', 12, 5, 0),
+  ('Jorginho', 'Meio Campo', 7, 5, 0),
+  ('Victor Luis', 'Lateral', 16, 5, 0),
+  ('Charles', 'Meio Campo', 28, 5, 0),
+  ('Jael', 'Atacante', 14, 5, 0),
+  ('Kelvyn', 'Lateral', 22, 5, 0),
+  ('Léo Chú', 'Atacante', 18, 5, 0),
+  ('Gustavo', 'Meio Campo', 23, 5, 0),
+  ('Wellington Paulista', 'Atacante', 9, 5, 0),
+
+  -- Corinthians
+  ('Cássio', 'Goleiro', 12, 6, 0),
+  ('Jô', 'Atacante', 77, 6, 0),
+  ('Fagner', 'Lateral', 23, 6, 0),
+  ('Juliano', 'Meio Campo', 8, 6, 0),
+  ('Renato Augusto', 'Meio Campo', 8, 6, 0),
+  ('Roni', 'Meio Campo', 29, 6, 0),
+  ('Gil', 'Zagueiro', 4, 6, 0),
+  ('Rafael Ramos', 'Lateral', 44, 6, 0),
+  ('Vítor Pereira', 'Meio Campo', 11, 6, 0),
+  ('Giuliano', 'Meio Campo', 11, 6, 0),
+  ('Maycon', 'Meio Campo', 5, 6, 0),
+
+  -- Cruzeiro
+  ('Fábio', 'Goleiro', 1, 7, 0),
+  ('Roberto', 'Atacante', 19, 7, 0),
+  ('Thiago Neves', 'Meio Campo', 30, 7, 0),
+  ('Sassá', 'Atacante', 20, 7, 0),
+  ('Marcelo Moreno', 'Atacante', 9, 7, 0),
+  ('Wellington', 'Zagueiro', 4, 7, 0),
+  ('Lucas Silva', 'Meio Campo', 16, 7, 0),
+  ('Rafael Sóbis', 'Atacante', 23, 7, 0),
+  ('Geovane', 'Meio Campo', 25, 7, 0),
+  ('Jadson', 'Atacante', 17, 7, 0),
+  ('Pedro Rocha', 'Atacante', 11, 7, 0),
+
+  -- Santos
+  ('Everson', 'Goleiro', 22, 8, 0),
+  ('Soteldo', 'Atacante', 10, 8, 0),
+  ('Luan Peres', 'Zagueiro', 5, 8, 0),
+  ('Marinho', 'Atacante', 11, 8, 0),
+  ('Felipe Jonathan', 'Lateral', 3, 8, 0),
+  ('Anderson', 'Zagueiro', 4, 8, 0),
+  ('Marcos Leonardo', 'Atacante', 34, 8, 0),
+  ('Diego Pituca', 'Meio Campo', 8, 8, 0),
+  ('Kaio Jorge', 'Atacante', 30, 8, 0),
+  ('Jean Mota', 'Meio Campo', 27, 8, 0),
+  ('Lucas Veríssimo', 'Zagueiro', 4, 8, 0);
+  
+  
+  USE Boleirones;
+
+INSERT INTO Jogos (idTimeCasa, idTimeFora, golsTimeCasa, golsTimeFora, pontosTimeCasa, pontosTimeFora, idEstadio, horario) VALUES
+  -- Jogo 1: Atlético-MG x Bahia
+  (1, 2, 2, 1, 3, 0, 1, '16:00:00'),   
+
+  -- Jogo 2: Botafogo x Bragantino
+  (3, 4, 1, 1, 1, 1, 2, '18:00:00'),  
+
+  -- Jogo 3: Ceará x Corinthians
+  (5, 6, 0, 3, 0, 3, 3, '20:00:00'),   
+  -- Jogo 4: Cruzeiro x Santos
+  (7, 8, 2, 2, 1, 1, 4, '21:30:00'),  
+
+  -- Jogo 5: Atlético-MG x Botafogo
+  (1, 3, 3, 0, 3, 0, 5, '14:00:00'),   
+
+  -- Jogo 6: Bahia x Cruzeiro
+  (2, 7, 1, 2, 0, 3, 6, '15:45:00'),   
+
+  -- Jogo 7: Bragantino x Santos
+  (4, 8, 2, 1, 3, 0, 7, '17:30:00'),  
+
+  -- Jogo 8: Corinthians x Botafogo
+  (6, 3, 0, 0, 1, 1, 8, '18:30:00'),  
+
+  -- Jogo 9: Ceará x Atlético-MG
+  (5, 1, 1, 2, 0, 3, 8, '20:00:00'),   
+
+  -- Jogo 10: Santos x Bahia
+  (8, 2, 1, 1, 1, 1, 8, '16:30:00');   
+
